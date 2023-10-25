@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editDonorName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Donor Name" />
+
+    <EditText
+        android:id="@+id/editPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone Number (1234567890)"
+        android:inputType="phone"
+        android:minEms="10"
+        android:maxEms="10"/>
+
+    <EditText
+        android:id="@+id/editPincode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pin code (123456)"
+        android:inputType="number"
+        android:minEms="6"
+        android:maxEms="6"/>
+
+    <EditText
+        android:id="@+id/editAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Address" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/saveButton" />
+</LinearLayout>
