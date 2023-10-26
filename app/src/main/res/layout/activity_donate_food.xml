@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Food Item -->
+    <TextView
+        android:id="@+id/textFoodItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Food Items"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <EditText
+        android:id="@+id/editFoodItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textFoodItem"
+        android:layout_margin="16dp"
+        android:hint="Enter Food Items"
+        android:inputType="text"/>
+
+    <!-- People it can Feed -->
+    <TextView
+        android:id="@+id/textPeopleToFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How many people it can feed"
+        android:layout_below="@id/editFoodItem"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/editPeopleToFeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textPeopleToFeed"
+        android:layout_margin="16dp"
+        android:hint="Enter the quantity"
+        android:inputType="number"/>
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/textDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_below="@id/editPeopleToFeed"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/editDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textDescription"
+        android:layout_margin="16dp"
+        android:hint="Enter a description"
+        android:inputType="textMultiLine"/>
+
+    <!-- Date Selector -->
+    <TextView
+        android:id="@+id/textCookedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cooked At"
+        android:layout_below="@id/editDescription"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textCookedAt"
+        android:layout_marginHorizontal="16dp"
+        android:padding="0dp"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"/>
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/datePicker"
+        android:layout_marginHorizontal="16dp"
+
+        android:timePickerMode="spinner"/>
+
+    <Button
+        android:id="@+id/donateFoodButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/timePicker"
+        android:layout_margin="16dp"
+        android:text="Donate Food" />
+
+</RelativeLayout>
+
+</ScrollView>

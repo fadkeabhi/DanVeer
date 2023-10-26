@@ -24,6 +24,8 @@ class DonorHomePage : AppCompatActivity() {
         donateFoodButton.setOnClickListener {
             // Handle "Donate Food" button click event
             // You can navigate to the Donate Food activity or perform other actions here.
+            val intent = Intent(this, DonateFood::class.java)
+            startActivity(intent)
         }
     }
 }
