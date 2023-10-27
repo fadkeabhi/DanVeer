@@ -20,6 +20,9 @@
         android:theme="@style/Theme.DanVeer"
         tools:targetApi="31">
         <activity
+            android:name=".NgoCompletedDonations"
+            android:exported="false" />
+        <activity
             android:name=".CallNumber"
             android:exported="false" />
         <activity

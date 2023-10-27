@@ -16,6 +16,7 @@ class NgoHomePage : AppCompatActivity() {
         val searchDonationButton = findViewById<Button>(R.id.searchDonations)
         val logOutButton = findViewById<Button>(R.id.logOutButton)
         val activeDonations = findViewById<Button>(R.id.activeDonations)
+        val completedDonations = findViewById<Button>(R.id.completedDonations)
 
 
         editInfoButton.setOnClickListener {
@@ -30,6 +31,11 @@ class NgoHomePage : AppCompatActivity() {
 
         activeDonations.setOnClickListener {
             val intent = Intent(this, NgoActiveDonations::class.java)
+            startActivity(intent)
+        }
+
+        completedDonations.setOnClickListener {
+            val intent = Intent(this, NgoCompletedDonations::class.java)
             startActivity(intent)
         }
 

@@ -19,8 +19,8 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 
 
-class NgoActiveCardAdapter(private val cardList: List<NgoCardData>) :
-    RecyclerView.Adapter<NgoActiveCardAdapter.ViewHolder>() {
+class NgoCompletedCardAdapter(private val cardList: List<NgoCardData>) :
+    RecyclerView.Adapter<NgoCompletedCardAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val foodItemTextView: TextView = itemView.findViewById(R.id.foodItemTextView)
@@ -50,15 +50,11 @@ class NgoActiveCardAdapter(private val cardList: List<NgoCardData>) :
         holder.offerByTextView.text = currentItem.donorName
         holder.contactTextView.text = currentItem.phoneNumber
         holder.addressTextView.text = currentItem.address
-        holder.bookButton.text = "Mark Received"
-        holder.bookButton.setOnClickListener {
-            bookDonation(currentItem.id, it.context)
-        }
 
-        holder.callButton.visibility = View.VISIBLE
-        holder.callButton.setOnClickListener{
-            callNumber(currentItem.phoneNumber, it.context)
-        }
+
+        holder.bookButton.visibility = View.INVISIBLE
+        holder.callButton.visibility = View.INVISIBLE
+
 //        holder.takenByTextView.text = currentItem.takenBy
 //        holder.statusTextView.text = currentItem.status
     }
@@ -130,9 +126,9 @@ class NgoActiveCardAdapter(private val cardList: List<NgoCardData>) :
 }
 
 
-class NgoActiveDonations : AppCompatActivity() {
+class NgoCompletedDonations : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var cardAdapter: NgoActiveCardAdapter
+    private lateinit var cardAdapter: NgoCompletedCardAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ngo_find_donations)
@@ -162,7 +158,7 @@ class NgoActiveDonations : AppCompatActivity() {
         val email = firebaseAuth.currentUser?.email.toString()
 
         cardCollection
-            .whereEqualTo("status", "booked")
+            .whereEqualTo("status", "completed")
             .whereEqualTo("takenBy", email)
             .orderBy("cookedAt", Query.Direction.DESCENDING)
             .get()
@@ -192,7 +188,7 @@ class NgoActiveDonations : AppCompatActivity() {
 
 
                 // Set up the CardAdapter
-                cardAdapter = NgoActiveCardAdapter(cardDataList)
+                cardAdapter = NgoCompletedCardAdapter(cardDataList)
                 recyclerView.adapter = cardAdapter
 
                 //Update data of each Restorant
