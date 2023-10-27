@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -48,7 +49,7 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
 //        val statusTextView: TextView = itemView.findViewById(R.id.statusTextView)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int ): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.donation_card_item_ngo, parent, false)
         return ViewHolder(itemView)
     }
@@ -98,7 +99,10 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
                                 "Booked the Donation.",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            println("uppdated")
+                            println("Booked")
+
+                            
+
                         }
                         .addOnFailureListener { e ->
                             // Update failed
@@ -135,9 +139,21 @@ class NgoFindDonations : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ngo_find_donations)
 
+        val swipeRefreshLayout : SwipeRefreshLayout= findViewById(R.id.swiperefresh)
+
+        // Set the refresh listener
+        swipeRefreshLayout.setOnRefreshListener {
+            // Perform data refresh operations here
+            retrieveCardData()
+            println("Data refreshed")
+            swipeRefreshLayout.isRefreshing = false
+        }
+
         retrieveCardData()
 
     }
+
+
 
     private fun retrieveCardData() {
         // Simulate data or fetch from Firestore
