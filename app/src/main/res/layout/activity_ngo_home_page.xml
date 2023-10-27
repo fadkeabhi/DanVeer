@@ -32,6 +32,20 @@
         android:text="Search Donations"
         android:layout_marginBottom="16dp" />
 
+    <Button
+        android:id="@+id/activeDonations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Active Donations"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/logOutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Logout" />
+
 
 
 </LinearLayout>

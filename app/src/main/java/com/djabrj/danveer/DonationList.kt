@@ -1,15 +1,20 @@
 package com.djabrj.danveer
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 
 data class CardData(
@@ -19,7 +24,8 @@ data class CardData(
     val cookedAt: String,
     val offereBy: String,
     val takenBy: String,
-    val status: String
+    val status: String,
+    val id : String
 )
 class CardAdapter(private val cardList: List<CardData>) :
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
@@ -29,9 +35,10 @@ class CardAdapter(private val cardList: List<CardData>) :
         val peopleToFeedTextView: TextView = itemView.findViewById(R.id.peopleToFeedTextView)
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         val cookedAtTextView: TextView = itemView.findViewById(R.id.cookedAtTextView)
-        val offerByTextView: TextView = itemView.findViewById(R.id.offerByTextView)
+//        val offerByTextView: TextView = itemView.findViewById(R.id.offerByTextView)
         val takenByTextView: TextView = itemView.findViewById(R.id.takenByTextView)
         val statusTextView: TextView = itemView.findViewById(R.id.statusTextView)
+        val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,9 +52,37 @@ class CardAdapter(private val cardList: List<CardData>) :
         holder.peopleToFeedTextView.text = currentItem.peopleToFeed
         holder.descriptionTextView.text = currentItem.description
         holder.cookedAtTextView.text = currentItem.cookedAt
-        holder.offerByTextView.text = currentItem.offereBy
+//        holder.offerByTextView.text = currentItem.offereBy
         holder.takenByTextView.text = currentItem.takenBy
         holder.statusTextView.text = currentItem.status
+
+        if(currentItem.status != "placed"){
+            holder.deleteButton.visibility = View.INVISIBLE
+        }
+
+        holder.deleteButton.setOnClickListener{
+            val context : Context = it.context
+            println(currentItem.id)
+            val db = FirebaseFirestore.getInstance()
+            val documentId = currentItem.id // Replace with the actual ID of the document you want to delete
+            val documentReference = db.collection("donations").document(documentId)
+            documentReference
+                .delete()
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        context,
+                        "Deleted successfully.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        context,
+                        "An error occured.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
     }
 
     override fun getItemCount() = cardList.size
@@ -61,6 +96,14 @@ class DonationList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_donation_list)
 
+        val swipeRefreshLayout : SwipeRefreshLayout = findViewById(R.id.swiperefresh)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            // Perform data refresh operations here
+            retrieveCardData()
+            println("Data refreshed")
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         retrieveCardData()
 
@@ -74,7 +117,9 @@ class DonationList : AppCompatActivity() {
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
         val email = firebaseAuth.currentUser?.email.toString()
 
-        cardCollection.whereEqualTo("offereBy", email)
+        cardCollection
+            .whereEqualTo("offereBy", email)
+            .orderBy("cookedAt",Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot: QuerySnapshot ->
                 for (document in querySnapshot) {
@@ -85,7 +130,8 @@ class DonationList : AppCompatActivity() {
                         document.data["cookedAt"].toString() ?: "",
                         document.data["offereBy"].toString() ?: "",
                         document.data["takenBy"].toString() ?: "",
-                        document.data["status"].toString() ?: ""
+                        document.data["status"].toString() ?: "",
+                        document.id.toString() ?: ""
                     )
                     cardDataList.add(card)
                 }

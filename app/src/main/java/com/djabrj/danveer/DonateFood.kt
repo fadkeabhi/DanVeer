@@ -124,6 +124,8 @@ class DonateFood : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
 
+                    finish()
+
                 } else {
                     Toast.makeText(
                         this,

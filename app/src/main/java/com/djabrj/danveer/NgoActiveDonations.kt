@@ -1,6 +1,7 @@
 package com.djabrj.danveer
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,25 +18,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 
-data class NgoCardData(
-    val id:String,
-    val foodItem: String,
-    val peopleToFeed: String,
-    val description: String,
-    val cookedAt: String,
-    val offereBy: String,
-    val takenBy: String,
-    val status: String,
 
-    //about reastorant
-    var donorName: String,
-    var phoneNumber: String,
-    var address: String,
-    var pinCode: String
-
-)
-class NgoCardAdapter(private val cardList: List<NgoCardData>) :
-    RecyclerView.Adapter<NgoCardAdapter.ViewHolder>() {
+class NgoActiveCardAdapter(private val cardList: List<NgoCardData>) :
+    RecyclerView.Adapter<NgoActiveCardAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val foodItemTextView: TextView = itemView.findViewById(R.id.foodItemTextView)
@@ -46,6 +31,7 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
         val contactTextView: TextView = itemView.findViewById(R.id.contactTextView)
         val addressTextView: TextView = itemView.findViewById(R.id.addressTextView)
         val bookButton: Button = itemView.findViewById(R.id.bookButton)
+        val callButton: Button = itemView.findViewById(R.id.callButton)
 //        val takenByTextView: TextView = itemView.findViewById(R.id.takenByTextView)
 //        val statusTextView: TextView = itemView.findViewById(R.id.statusTextView)
     }
@@ -64,8 +50,14 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
         holder.offerByTextView.text = currentItem.donorName
         holder.contactTextView.text = currentItem.phoneNumber
         holder.addressTextView.text = currentItem.address
+        holder.bookButton.text = "Mark Received"
         holder.bookButton.setOnClickListener {
             bookDonation(currentItem.id, it.context)
+        }
+
+        holder.callButton.visibility = View.VISIBLE
+        holder.callButton.setOnClickListener{
+            callNumber(currentItem.phoneNumber, it.context)
         }
 //        holder.takenByTextView.text = currentItem.takenBy
 //        holder.statusTextView.text = currentItem.status
@@ -73,6 +65,15 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
 
     override fun getItemCount() = cardList.size
 
+    private fun callNumber(number: String, context: Context){
+        val intent = Intent(context, CallNumber::class.java)
+        intent.putExtra("number", number)
+        context.startActivity(intent)
+
+//        val intent = Intent(Intent.ACTION_CALL);
+//        intent.data = Uri.parse("tel:$number")
+//        context.startActivity(intent)
+    }
     private fun bookDonation(id : String, context: Context){
 
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -84,11 +85,10 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
             .get()
             .addOnSuccessListener {document ->
                 // Check if a document with the email was found
-                if(document.data?.get("status").toString() == "placed"){
+                if(document.data?.get("status").toString() == "booked"){
                     //now modify details
                     val updatedData = hashMapOf(
-                        "status" to "booked",
-                        "takenBy" to email
+                        "status" to "completed"
                     )
                     donationProfileRef.document(id)
                         .update(updatedData as Map<String, Any>)
@@ -97,13 +97,10 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
                             // Handle success, if needed
                             Toast.makeText(
                                 context,
-                                "Booked the Donation.",
+                                "Received Donation.",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            println("Booked")
-
-                            
-
+                            println("Received")
                         }
                         .addOnFailureListener { e ->
                             // Update failed
@@ -121,7 +118,7 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
                 else{
                     Toast.makeText(
                         context,
-                        "Sorry the donation is already booked.",
+                        "Sorry the donation is already received.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -133,9 +130,9 @@ class NgoCardAdapter(private val cardList: List<NgoCardData>) :
 }
 
 
-class NgoFindDonations : AppCompatActivity() {
+class NgoActiveDonations : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var cardAdapter: NgoCardAdapter
+    private lateinit var cardAdapter: NgoActiveCardAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ngo_find_donations)
@@ -164,7 +161,9 @@ class NgoFindDonations : AppCompatActivity() {
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
         val email = firebaseAuth.currentUser?.email.toString()
 
-        cardCollection.whereEqualTo("status", "placed")
+        cardCollection
+            .whereEqualTo("status", "booked")
+            .whereEqualTo("takenBy", email)
             .orderBy("cookedAt", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot: QuerySnapshot ->
@@ -193,7 +192,7 @@ class NgoFindDonations : AppCompatActivity() {
 
 
                 // Set up the CardAdapter
-                cardAdapter = NgoCardAdapter(cardDataList)
+                cardAdapter = NgoActiveCardAdapter(cardDataList)
                 recyclerView.adapter = cardAdapter
 
                 //Update data of each Restorant
