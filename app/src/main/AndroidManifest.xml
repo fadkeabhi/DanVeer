@@ -15,6 +15,9 @@
         android:theme="@style/Theme.DanVeer"
         tools:targetApi="31">
         <activity
+            android:name=".NgoFindDonations"
+            android:exported="false" />
+        <activity
             android:name=".NgoProfile"
             android:exported="false" />
         <activity

@@ -12,12 +12,16 @@ class NgoHomePage : AppCompatActivity() {
 
 
         val editInfoButton = findViewById<Button>(R.id.editInfoButton)
+        val searchDonationButton = findViewById<Button>(R.id.searchDonations)
 
 
         editInfoButton.setOnClickListener {
-            // Handle "Edit Info" button click event
-            // You can navigate to the Edit Info activity or perform other actions here.
             val intent = Intent(this, NgoProfile::class.java)
+            startActivity(intent)
+        }
+
+        searchDonationButton.setOnClickListener {
+            val intent = Intent(this, NgoFindDonations::class.java)
             startActivity(intent)
         }
 
