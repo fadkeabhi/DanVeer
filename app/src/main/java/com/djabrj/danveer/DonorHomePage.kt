@@ -13,6 +13,7 @@ class DonorHomePage : AppCompatActivity() {
 
         val editInfoButton = findViewById<Button>(R.id.editInfoButton)
         val donateFoodButton = findViewById<Button>(R.id.donateFoodButton)
+        val viewDonationsButton = findViewById<Button>(R.id.viewDonationsButton)
 
         editInfoButton.setOnClickListener {
             // Handle "Edit Info" button click event
@@ -25,6 +26,13 @@ class DonorHomePage : AppCompatActivity() {
             // Handle "Donate Food" button click event
             // You can navigate to the Donate Food activity or perform other actions here.
             val intent = Intent(this, DonateFood::class.java)
+            startActivity(intent)
+        }
+
+        viewDonationsButton.setOnClickListener {
+            // Handle "Donate Food" button click event
+            // You can navigate to the Donate Food activity or perform other actions here.
+            val intent = Intent(this, DonationList::class.java)
             startActivity(intent)
         }
     }

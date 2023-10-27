@@ -29,5 +29,14 @@
         android:id="@+id/donateFoodButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Donate Food" />
+        android:text="Donate Food"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/viewDonationsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Donations"
+        android:layout_marginBottom="16dp" />
+
 </LinearLayout>
