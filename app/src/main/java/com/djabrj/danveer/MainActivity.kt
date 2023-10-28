@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             }
             startActivity(intent)
             finish() // Optional: Close the current activity if needed
-        }, 5000) // 5000 milliseconds (5 seconds)
+        }, 0) // 5000 milliseconds (5 seconds)
     }
 
 }

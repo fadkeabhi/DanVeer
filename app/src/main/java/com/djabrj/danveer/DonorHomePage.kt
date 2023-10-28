@@ -38,6 +38,8 @@ class DonorHomePage : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
         logOutButton.setOnClickListener {
             // Handle "Donate Food" button click event
             // You can navigate to the Donate Food activity or perform other actions here.

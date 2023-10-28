@@ -48,6 +48,10 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:17.0.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
+    //open streat map
+    implementation("org.osmdroid:osmdroid-android:6.1.14")
+
+
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))

@@ -1,5 +1,6 @@
 package com.djabrj.danveer
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -133,6 +134,12 @@ class DonorProfile : FragmentActivity(){
         val editAddress = findViewById<EditText>(R.id.editAddress)
         val editPincode = findViewById<EditText>(R.id.editPincode)
         val saveButton = findViewById<Button>(R.id.saveButton)
+        val updateLocation = findViewById<Button>(R.id.updateLocation)
+
+        updateLocation.setOnClickListener{
+            val intent = Intent(this, MapSelectLocation::class.java)
+            startActivity(intent)
+        }
 
         saveButton.setOnClickListener {
             val donorName = editDonorName.text.toString()
