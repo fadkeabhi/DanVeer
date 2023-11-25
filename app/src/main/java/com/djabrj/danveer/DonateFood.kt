@@ -102,7 +102,7 @@ class DonateFood : AppCompatActivity() {
         val email = firebaseAuth.currentUser?.email.toString()
 
         val db = FirebaseFirestore.getInstance()
-        val collectionName = "donations" // Replace with your Firestore collection name
+        val collectionName = "donations"
 
         val data = hashMapOf(
             "foodItem" to foodItem,

@@ -32,6 +32,7 @@ class NgoActiveCardAdapter(private val cardList: List<NgoCardData>) :
         val addressTextView: TextView = itemView.findViewById(R.id.addressTextView)
         val bookButton: Button = itemView.findViewById(R.id.bookButton)
         val callButton: Button = itemView.findViewById(R.id.callButton)
+        val mapButton: Button = itemView.findViewById(R.id.mapButton)
 //        val takenByTextView: TextView = itemView.findViewById(R.id.takenByTextView)
 //        val statusTextView: TextView = itemView.findViewById(R.id.statusTextView)
     }
@@ -55,6 +56,14 @@ class NgoActiveCardAdapter(private val cardList: List<NgoCardData>) :
             bookDonation(currentItem.id, it.context)
         }
 
+        if(currentItem.latitude != 0.toDouble()){
+            holder.mapButton.visibility = View.VISIBLE
+            holder.mapButton.setOnClickListener{
+                openMap(currentItem.latitude, currentItem.longitude, it.context)
+            }
+        }
+
+
         holder.callButton.visibility = View.VISIBLE
         holder.callButton.setOnClickListener{
             callNumber(currentItem.phoneNumber, it.context)
@@ -69,10 +78,13 @@ class NgoActiveCardAdapter(private val cardList: List<NgoCardData>) :
         val intent = Intent(context, CallNumber::class.java)
         intent.putExtra("number", number)
         context.startActivity(intent)
+    }
 
-//        val intent = Intent(Intent.ACTION_CALL);
-//        intent.data = Uri.parse("tel:$number")
-//        context.startActivity(intent)
+    private fun openMap(latitude: Double, longitude: Double, context: Context){
+        val intent = Intent(context, MapShowLocation::class.java)
+        intent.putExtra("latitude", latitude.toString())
+        intent.putExtra("longitude", longitude.toString())
+        context.startActivity(intent)
     }
     private fun bookDonation(id : String, context: Context){
 
@@ -181,7 +193,9 @@ class NgoActiveDonations : AppCompatActivity() {
                         "",
                         "",
                         "",
-                        ""
+                        "",
+                        0.toDouble(),
+                        0.toDouble()
                     )
                     cardDataList.add(card)
                 }
@@ -208,6 +222,12 @@ class NgoActiveDonations : AppCompatActivity() {
                                 cardDataList[i].donorName = document.data["donorName"].toString() ?: ""
                                 cardDataList[i].phoneNumber = document.data["phoneNumber"].toString() ?: ""
                                 cardDataList[i].address = document.data["address"].toString() ?: ""
+
+                                if(document.contains("latitude") && document.contains("longitude")){
+                                    cardDataList[i].latitude = document.data["latitude"].toString().toDouble()
+                                    cardDataList[i].longitude = document.data["longitude"].toString().toDouble()
+
+                                }
 
                                 //update UI
                                 cardAdapter.notifyItemChanged(i)

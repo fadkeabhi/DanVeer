@@ -31,7 +31,9 @@ data class NgoCardData(
     var donorName: String,
     var phoneNumber: String,
     var address: String,
-    var pinCode: String
+    var pinCode: String,
+    var latitude: Double,
+    var longitude: Double
 
 )
 class NgoCardAdapter(private val cardList: List<NgoCardData>) :
@@ -182,9 +184,13 @@ class NgoFindDonations : AppCompatActivity() {
                         "",
                         "",
                         "",
-                        ""
+                        "",
+                        0.toDouble(),
+                        0.toDouble()
                     )
                     cardDataList.add(card)
+
+                    println(card.id)
                 }
 
                 // Initialize the RecyclerView

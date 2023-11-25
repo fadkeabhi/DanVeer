@@ -10,11 +10,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var firebaseAuth : FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
 
         // Check if a user is already logged in
         val currentUser = firebaseAuth.currentUser
@@ -63,12 +65,14 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 // Handle errors (e.g., network issues, permission denied)
+
                 goToLogin()
             }
 
     }
 
     private fun goToLogin(){
+        firebaseAuth.signOut()
         val intent = Intent(this, LoginActivity::class.java)
         finish()
         startActivity(intent)

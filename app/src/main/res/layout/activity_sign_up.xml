@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".LoginActivity">
+    tools:context=".SignUp">
 
     <EditText
         android:id="@+id/emailEditText"
@@ -26,15 +26,9 @@
         android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"/>
-
-    <Button
         android:id="@+id/signUpButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dont have an account"/>
+        android:text="Sign Up"/>
 
 </LinearLayout>

@@ -15,6 +15,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
+    private lateinit var signUpButton: Button
     private lateinit var firebaseAuth: FirebaseAuth
 
 
@@ -75,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         loginButton = findViewById(R.id.loginButton)
+        signUpButton = findViewById(R.id.signUpButton)
         firebaseAuth = FirebaseAuth.getInstance()
 
 
@@ -85,6 +87,11 @@ class LoginActivity : AppCompatActivity() {
 
         if (currentUser == null) {
             // The user is not logged in, you can show the login screen or perform any other actions.
+
+            signUpButton.setOnClickListener {
+                val intent = Intent(this, SignUp::class.java)
+                startActivity(intent)
+            }
 
             loginButton.setOnClickListener {
                 email = emailEditText.text.toString()

@@ -177,7 +177,9 @@ class NgoCompletedDonations : AppCompatActivity() {
                         "",
                         "",
                         "",
-                        ""
+                        "",
+                        0.toDouble(),
+                        0.toDouble()
                     )
                     cardDataList.add(card)
                 }
